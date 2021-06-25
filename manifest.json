@@ -20,7 +20,7 @@
     "uiEntryPoints": [
         {
             "type": "panel",
-            "label": "Enlarge a Rectangle",
+            "label": "插件demo",
             "panelId": "enlargeRectangle"
         }
     ],

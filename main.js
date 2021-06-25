@@ -1,5 +1,5 @@
 let panel;
-
+const { Rectangle, Color, Text } = require('scenegraph');
 function create() {
     // [1]
     const html = `
@@ -44,6 +44,11 @@ function create() {
 </form>
 
 <p id="warning">This plugin requires you to select a rectangle in the document. Please select a rectangle.</p>
+
+<h2>其他功能</h2>
+
+<div id="fillText"> > 填充文字</div>
+
 `;
 
     function increaseRectangleSize() {
@@ -63,6 +68,24 @@ function create() {
     panel = document.createElement('div'); // [9]
     panel.innerHTML = html; // [10]
     panel.querySelector('form').addEventListener('submit', increaseRectangleSize); // [11]
+
+    panel.querySelector('#fillText').addEventListener('click', () => {
+        const { editDocument } = require('application'); // [3]
+
+        // [6]
+        editDocument({ editLabel: '填充文字' }, function (selection, root) {
+            const selectedRectangle = selection.items[0]; // [7]
+
+            console.log(selectedRectangle.translation);
+            const { x, y } = selectedRectangle.translation;
+            const text = new Text();
+            text.text = '这是文字杀杀杀';
+            text.fill = new Color('yellow');
+            text.fontSize = 30;
+            root.addChild(text);
+            text.moveInParentCoordinates(x, y);
+        });
+    });
 
     return panel; // [12]
 }
