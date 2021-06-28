@@ -20,8 +20,13 @@
     "uiEntryPoints": [
         {
             "type": "panel",
-            "label": "插件demo",
+            "label": "panel-demo",
             "panelId": "enlargeRectangle"
+        },
+        {
+            "type": "menu",
+            "label": "command-demo 填充",
+            "commandId": "createRectangle"
         }
     ],
     "version": "0.0.1"

@@ -1,3 +1,5 @@
+const { ref } = require('./vue/reactivity.cjs.prod');
+
 let panel;
 const { Rectangle, Color, Text } = require('scenegraph');
 function create() {
@@ -110,11 +112,16 @@ function update(selection) {
     }
 }
 
+const { rectangleHandlerFunction } = require('./createRectangle/index');
+
 module.exports = {
     panels: {
         enlargeRectangle: {
             show,
             update,
         },
+    },
+    commands: {
+        createRectangle: rectangleHandlerFunction,
     },
 };
