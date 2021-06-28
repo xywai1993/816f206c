@@ -1,4 +1,5 @@
-const { Rectangle, Color, Text, RepeatGrid, SymbolInstance } = require('scenegraph');
+const { Rectangle, Color, Text, RepeatGrid, SymbolInstance, ImageFill } = require('scenegraph');
+const { downloadImage } = require('../util/request');
 
 let dialog = null;
 const dialogHtml = `<style>
@@ -82,15 +83,20 @@ const createChoiceBox = (data) => {
     choiceBox.innerHTML = ul.join('');
 };
 
-function doneFunc() {
+async function doneFunc() {
     const li = choiceBox.querySelectorAll('input');
     const checked = Array.from(li)
         .filter((ele) => ele.checked)
         .map((ele) => ele.value);
 
-    selectionNodeList.forEach((item) => {
+    const imgFile = await downloadImage();
+    selectionNodeList.forEach((item, index) => {
         if (checked.includes(item.name)) {
-            item.fill = new Color('red');
+            if (imgFile[index]) {
+                item.fill = new ImageFill(imgFile[index]);
+            } else {
+                item.fill = new ImageFill(imgFile[0]);
+            }
         }
     });
     dialog.close();
