@@ -1,0 +1,22 @@
+{
+  "name": "816f206c",
+  "version": "1.0.0",
+  "description": "This is the starter project to be available to developers who first create an XD plugin instance in [Adobe I/O Console](https://console.adobe.io/plugins).",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xywai1993/816f206c.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xywai1993/816f206c/issues"
+  },
+  "homepage": "https://github.com/xywai1993/816f206c#readme",
+  "dependencies": {
+    "@vue/reactivity": "^3.1.2"
+  }
+}
