@@ -1,4 +1,4 @@
-const { Rectangle, Color, Text } = require('scenegraph');
+const { Rectangle, Color, Text, RepeatGrid, SymbolInstance } = require('scenegraph');
 
 let dialog = null;
 const dialogHtml = `<style>
@@ -24,7 +24,7 @@ form {
     <img class="icon" src="../images/icon@1x.png" />
 </h1>
 <hr />
-<p>Please enter the kind of shape you'd like to create. You can also include additional options by separating them with spaces.</p>
+<p>已忽略组件对象</p>
 <ul id="choiceBox">
     <li><input  type="checkbox" name='check' value="23"/> <label>23</label> </li>
 </ul>
@@ -42,7 +42,7 @@ document.appendChild(dialog);
 const cancel = document.querySelector('#cancel');
 const done = document.querySelector('#done');
 const choiceBox = document.querySelector('#choiceBox');
-
+let selectionNodeList = [];
 cancel.addEventListener('click', () => {
     dialog.close();
 });
@@ -66,7 +66,10 @@ done.addEventListener('click', () => {
 function scanGroup(nodeList, callback) {
     nodeList.forEach((node) => {
         if (node.isContainer) {
-            scanGroup(node.children, callback);
+            console.log('node instanceof SymbolInstance', node instanceof SymbolInstance, node);
+            if (!(node instanceof SymbolInstance)) {
+                scanGroup(node.children, callback);
+            }
         } else {
             callback(node);
         }
@@ -85,7 +88,6 @@ function doneFunc() {
         .filter((ele) => ele.checked)
         .map((ele) => ele.value);
 
-    console.log(checked);
     selectionNodeList.forEach((item) => {
         if (checked.includes(item.name)) {
             item.fill = new Color('red');
@@ -94,13 +96,13 @@ function doneFunc() {
     dialog.close();
 }
 
-const selectionNodeList = [];
 function rectangleHandlerFunction(selection, root) {
-    console.log(selection, root);
-
+    console.log(selection.items, root);
+    selectionNodeList = [];
     scanGroup(selection.items, (node) => {
         selectionNodeList.push(node);
     });
+    console.log(selectionNodeList);
 
     const name = [...new Set(selectionNodeList.map((item) => item.name))];
 
