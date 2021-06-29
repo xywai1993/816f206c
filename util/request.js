@@ -28,9 +28,10 @@ function xhrBinary(url) {
 async function createImage(imageUrl) {
     try {
         //     const photoUrl = jsonResponse.message; // [2]
+        const date = new Date().getTime();
         const photoObj = await xhrBinary(imageUrl); // [3]
         const tempFolder = await fs.getTemporaryFolder(); // [4]
-        const tempFile = await tempFolder.createFile('tmp', { overwrite: true }); // [5]
+        const tempFile = await tempFolder.createFile(`tmp_${date}_${parseInt(Math.random() * 1000)}`, { overwrite: true }); // [5]
         await tempFile.write(photoObj, { format: formats.binary }); // [6]
         // applyImagefill(selection, tempFile); // [7]
         return tempFile;
@@ -41,17 +42,21 @@ async function createImage(imageUrl) {
 }
 
 async function downloadImage(url = 'https://tinyfac.es/api/users') {
-    const data = await fetch(url).then((da) => da.json());
+    let filter = [];
+    const avatarList = localStorage.getItem('avatarList');
+    if (avatarList) {
+        console.log(JSON.parse(avatarList));
+        filter = JSON.parse(avatarList);
+    } else {
+        localStorage.setItem('avatarList', JSON.stringify(filter));
+        const data = await fetch(url).then((da) => da.json());
+        filter = data.map((item) => item.avatars[0].url);
+    }
 
-    const filter = data.map((item) => item.avatars[0]);
-    console.log(filter);
-    const oneUrl = filter[0].url;
-    console.log(11111, oneUrl);
-
-    const promiseAll = filter.map((item) => createImage(item.url));
+    // const oneUrl = filter[0].url;
+    const promiseAll = filter.map((item) => createImage(item));
 
     return Promise.all(promiseAll);
-    // [1]
 }
 
 // async function downlaodImage(url) {

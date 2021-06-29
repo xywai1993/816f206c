@@ -90,11 +90,13 @@ async function doneFunc() {
         .map((ele) => ele.value);
 
     const imgFile = await downloadImage();
+
     selectionNodeList.forEach((item, index) => {
         if (checked.includes(item.name)) {
-            if (imgFile[index]) {
+            if (imgFile.length >= index) {
                 item.fill = new ImageFill(imgFile[index]);
             } else {
+                console.log(2222);
                 item.fill = new ImageFill(imgFile[0]);
             }
         }
