@@ -48,9 +48,9 @@ async function downloadImage(url = 'https://tinyfac.es/api/users') {
         console.log(JSON.parse(avatarList));
         filter = JSON.parse(avatarList);
     } else {
-        localStorage.setItem('avatarList', JSON.stringify(filter));
         const data = await fetch(url).then((da) => da.json());
         filter = data.map((item) => item.avatars[0].url);
+        localStorage.setItem('avatarList', JSON.stringify(filter));
     }
 
     // const oneUrl = filter[0].url;
